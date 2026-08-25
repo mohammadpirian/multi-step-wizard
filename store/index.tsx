@@ -4,19 +4,26 @@ import { UserDataInterface } from "./store.interface";
 
 export const useUserDataStore = create<UserDataInterface>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       firstName: "",
       lastName: "",
       email: "",
-      age: "",
+      age: undefined,
       gender: "",
       occupation: "",
       country: "",
       city: "",
       address: "",
+
+      setStep1Data: (data) =>
+        set({
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+        }),
     }),
     {
-      name: "profile-storage",
+      name: "register-storage",
     },
   ),
 );
