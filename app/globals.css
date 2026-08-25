@@ -2,7 +2,7 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #f9fafb;
 }
 
 @theme inline {
@@ -14,7 +14,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #f9fafb;
     --foreground: #ededed;
   }
 }
@@ -36,4 +36,39 @@ body {
 .form-control:disabled {
   opacity: 50%;
   --tw-bg-opacity: 40%;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #707070;
+  border-radius: 15px;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
+  display: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 15px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px #e9e9e9;
+  border-radius: 15px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #707070;
+  border-radius: 15px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #707070;
+  border-radius: 15px;
 }
