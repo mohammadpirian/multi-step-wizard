@@ -9,7 +9,7 @@ export const useUserDataStore = create<UserDataInterface>()(
       lastName: "",
       email: "",
       age: undefined,
-      gender: "",
+      gender: undefined,
       occupation: "",
       country: "",
       city: "",
@@ -20,6 +20,18 @@ export const useUserDataStore = create<UserDataInterface>()(
           firstName: data.firstName,
           lastName: data.lastName,
           email: data.email,
+        }),
+      setStep2Data: (data) =>
+        set({
+          age: data.age,
+          gender: data.gender,
+          occupation: data.occupation,
+        }),
+      setStep3Data: (data) =>
+        set({
+          country: data.country,
+          city: data.city,
+          address: data.address,
         }),
     }),
     {

@@ -10,4 +10,10 @@ export const step1Schema = z.object({
     .email("فرمت ایمیل صحیح نیست"),
 });
 
+export const step2Schema = z.object({
+  age: z.number().min(1, "سن الزامی است"),
+  gender: z.number(),
+  occupation: z.string().trim().min(1, "شغل الزامی است"),
+});
+
 export type Step1Data = z.infer<typeof step1Schema>;

@@ -4,7 +4,7 @@ export type UserDataInterface = {
   email: string;
 
   age: number | undefined;
-  gender: string;
+  gender: number | undefined;
   occupation: string;
 
   country: string;
@@ -15,5 +15,17 @@ export type UserDataInterface = {
     firstName: string;
     lastName: string;
     email: string;
+  }) => void;
+
+  setStep2Data: (data: {
+    age: number;
+    gender: number;
+    occupation: string;
+  }) => void;
+
+  setStep3Data: (data: {
+    country: string;
+    city: string;
+    address: string;
   }) => void;
 };
