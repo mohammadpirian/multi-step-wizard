@@ -72,3 +72,7 @@ body {
   background: #707070;
   border-radius: 15px;
 }
+
+.link-outline {
+  @apply relative overflow-hidden h-10 flex items-center justify-center px-8 py-2 border rounded-2xl text-sm font-bold border-gray-500 text-gray-800 hover:ring-gray-800;
+}

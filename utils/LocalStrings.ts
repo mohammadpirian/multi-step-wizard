@@ -16,6 +16,7 @@ const _STRINGS = {
   OCCUPATION: "شغل",
   ENTER_OCCUPATION: "شغل خود را وارد نمایید",
   NEXT: "ادامه",
+  REGISTER: "ثبت نام",
   COUNTRY: "کشور",
   SELECT_COUNTRY: "کشور را انتخاب کنید",
   PROVINCE: "استان",
