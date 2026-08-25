@@ -1,3 +1,12 @@
+export type LocationItem = {
+  id: number;
+  title: string;
+};
+
+export type CountryItem = LocationItem & {
+  child: LocationItem[];
+};
+
 export type UserDataInterface = {
   firstName: string;
   lastName: string;
@@ -7,8 +16,8 @@ export type UserDataInterface = {
   gender: number | undefined;
   occupation: string;
 
-  country: string;
-  city: string;
+  country: CountryItem | undefined;
+  city: LocationItem | undefined;
   address: string;
 
   setStep1Data: (data: {
@@ -24,8 +33,8 @@ export type UserDataInterface = {
   }) => void;
 
   setStep3Data: (data: {
-    country: string;
-    city: string;
+    country: CountryItem | undefined;
+    city: LocationItem | undefined;
     address: string;
   }) => void;
 };

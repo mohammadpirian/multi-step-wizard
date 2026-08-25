@@ -11,8 +11,8 @@ export const useUserDataStore = create<UserDataInterface>()(
       age: undefined,
       gender: undefined,
       occupation: "",
-      country: "",
-      city: "",
+      country: undefined,
+      city: undefined,
       address: "",
 
       setStep1Data: (data) =>
