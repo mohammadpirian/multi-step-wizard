@@ -50,7 +50,7 @@ const FormInput = ({
       {item?.title ? (
         <label
           htmlFor={`input-${item?.id}`}
-          className={`block  mb-2 ml-1 text-xs  pr-1 font-normal text-m-dark-500 ${
+          className={`block  mb-2 ml-1 text-xs  pr-1 font-normal text-gray-700 ${
             item?.isMandatory && "after:content-['*'] after:mr-1 "
           } ${item?.titleClass || ""}`}
         >
