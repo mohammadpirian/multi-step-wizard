@@ -26,11 +26,11 @@ export default function StepTwo() {
   } = useUserDataStore();
 
   const [formData, setFormData] = useState<{
-    age: string | number;
+    age: string | number | undefined;
     gender: number;
     occupation: string;
   }>({
-    age: storedAge ?? "",
+    age: storedAge ?? 0,
     gender: storedGender ?? 0,
     occupation: storedOccupation ?? "",
   });
@@ -84,7 +84,7 @@ export default function StepTwo() {
         <div className="w-full flex flex-col gap-4">
           <div className="w-full flex flex-col gap-1">
             <FormInput
-              value={formData.age}
+              value={formData.age != 0 ? formData.age : ""}
               onChangeText={(value) => {
                 setFormData((prev) => ({
                   ...prev,

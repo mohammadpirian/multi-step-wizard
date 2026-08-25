@@ -4,7 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { useUserDataStore } from "@/store";
-import { step2Schema, step3Schema } from "@/schemas/register.schema";
+import {
+  finalSchema,
+  step2Schema,
+  step3Schema,
+} from "@/schemas/register.schema";
 import FormInput from "@/components/FormInput/FormInput";
 import Button from "@/components/Button/Button";
 import _STRINGS from "@/utils/LocalStrings";
@@ -17,8 +21,13 @@ type FormErrors = {
 };
 
 export default function StepThree() {
-  const router = useRouter();
   const {
+    firstName,
+    lastName,
+    email,
+    age,
+    gender,
+    occupation,
     country: storedCountry,
     city: storedCity,
     address: storedAddress,
@@ -33,21 +42,21 @@ export default function StepThree() {
   const [cityList, setCityList] = useState<any[]>([]);
   const [address, setAddress] = useState<string>(storedAddress ?? "");
 
-  console.log("selectedProvince", selectedProvince);
-
   const [errors, setErrors] = useState<FormErrors>({});
 
-  const handleSubmit = () => {
-    const result = step3Schema.safeParse({
+  const handleSubmit = async () => {
+    const step3Data = {
       country: selectedCountry,
       province: selectedProvince,
-      address: address,
-    });
+      address,
+    };
 
-    if (!result.success) {
+    const step3Result = step3Schema.safeParse(step3Data);
+
+    if (!step3Result.success) {
       const formattedErrors: FormErrors = {};
 
-      result.error.issues.forEach((issue) => {
+      step3Result.error.issues.forEach((issue) => {
         const key = issue.path[0] as string;
 
         if (!formattedErrors[key]) {
@@ -63,12 +72,50 @@ export default function StepThree() {
     }
 
     setErrors({});
+
+    const finalData = {
+      firstName,
+      lastName,
+      email,
+      age,
+      gender,
+      occupation,
+      country: selectedCountry,
+      province: selectedProvince,
+      address,
+    };
+
+    const finalResult = finalSchema.safeParse(finalData);
+
+    if (!finalResult.success) {
+      console.log(finalResult.error);
+      return;
+    }
+
     setStep3Data({
       country: selectedCountry,
       city: selectedProvince,
-      address: result.data.address,
+      address,
     });
-    console.log("done");
+
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(finalResult.data),
+      });
+
+      if (!response.ok) {
+        throw new Error("failed");
+      }
+
+      const data = await response.json();
+      console.log("Successfully", data);
+    } catch (error) {
+      console.error("error", error);
+    }
   };
 
   return (
@@ -87,32 +134,54 @@ export default function StepThree() {
         </div>
 
         <div className="w-full flex flex-col gap-4">
-          <FormSelect
-            title={_STRINGS.COUNTRY}
-            list={countries_data}
-            value={selectedCountry}
-            property="title"
-            item={{
-              placeholder: _STRINGS.SELECT_COUNTRY,
-            }}
-            onSelect={(province) => {
-              setSelectedCountry(province);
+          <div className="w-full flex flex-col gap-1">
+            <FormSelect
+              title={_STRINGS.COUNTRY}
+              list={countries_data}
+              value={selectedCountry}
+              property="title"
+              item={{
+                placeholder: _STRINGS.SELECT_COUNTRY,
+              }}
+              onSelect={(value) => {
+                setSelectedCountry(value);
 
-              setCityList(province?.child || []);
-            }}
-          />
-          <FormSelect
-            title={_STRINGS.PROVINCE}
-            list={cityList}
-            value={selectedProvince}
-            property="title"
-            item={{
-              placeholder: _STRINGS.SELECT_PROVINCE,
-            }}
-            onSelect={(province) => {
-              setSelectedProvince(province);
-            }}
-          />
+                setCityList(value?.child || []);
+                if (errors.country) {
+                  setErrors((prev) => ({
+                    ...prev,
+                    country: [],
+                  }));
+                }
+              }}
+            />
+            {errors?.country?.[0] && (
+              <p className="mt-1 text-xs text-red-500">{errors?.country[0]}</p>
+            )}
+          </div>
+          <div className="w-full flex flex-col gap-1">
+            <FormSelect
+              title={_STRINGS.PROVINCE}
+              list={cityList}
+              value={selectedProvince}
+              property="title"
+              item={{
+                placeholder: _STRINGS.SELECT_PROVINCE,
+              }}
+              onSelect={(value) => {
+                setSelectedProvince(value);
+                if (errors.province) {
+                  setErrors((prev) => ({
+                    ...prev,
+                    province: [],
+                  }));
+                }
+              }}
+            />
+            {errors?.province?.[0] && (
+              <p className="mt-1 text-xs text-red-500">{errors?.province[0]}</p>
+            )}
+          </div>
 
           <div className="w-full flex flex-col gap-1">
             <FormInput
